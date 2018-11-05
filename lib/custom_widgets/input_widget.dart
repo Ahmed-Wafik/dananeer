@@ -10,17 +10,23 @@ class TextInputWidget extends StatelessWidget {
   final ValidateChange validate, onSave;
   final TextInputType keyboardType;
   final Color color = Colors.white;
+  final TextInputAction textinputAction;
+  FocusNode currentFocusNode = FocusNode();
+  FocusNode nextFocusNode = FocusNode();
 
-  const TextInputWidget(
+  TextInputWidget(
       {Key key,
       this.icon,
       this.hintText,
       this.labelText,
       this.errorMessage,
       this.controller,
-      this.isPassword=false,
+      this.isPassword = false,
       this.validate,
       this.onSave,
+      this.textinputAction = TextInputAction.next,
+      this.currentFocusNode,
+      this.nextFocusNode,
       this.keyboardType})
       : super(key: key);
 
@@ -31,35 +37,48 @@ class TextInputWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            height: 42.9,
-            width: 55.0,
-            child: Icon(
-              icon,
-              size: 27.0,
-              color: color,
-            ),
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 2.0)),
-          ),
+          icon == null
+              ? Container(
+                  height: 42.9,
+                  width: 55.0,
+                  child: Icon(
+                    icon,
+                    size: 27.0,
+                    color: color,
+                  ),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 2.0)),
+                )
+              : Container(),
           Flexible(
               child: TextFormField(
-                keyboardType: keyboardType,
-                onSaved: onSave,
-                validator: validate,
-                obscureText: isPassword,
-                controller: controller,
+                
+                  textInputAction: textinputAction,
+                  focusNode: currentFocusNode,
+                  onFieldSubmitted: (term) => _fieldFocusChange(
+                      context, currentFocusNode, nextFocusNode),
+                  keyboardType: keyboardType,
+                  onSaved: onSave,
+                  validator: validate,
+                  obscureText: isPassword,
+                  controller: controller,
                   decoration: InputDecoration(
-            border: InputBorder.none,
-            fillColor: Colors.white,
-            filled: true,
-            labelText: labelText,
-            errorText: errorMessage,
-            hintText: hintText,
-          ))),
+                    border: InputBorder.none,
+                    fillColor: Colors.white,
+                    filled: true,
+                    labelText: labelText,
+                    errorText: errorMessage,
+                    hintText: hintText,
+                  ))),
         ],
       ),
     );
+  }
+
+  _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 }
 

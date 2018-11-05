@@ -1,5 +1,6 @@
 import 'package:dananeer_app/custom_widgets/input_widget.dart';
-import 'package:dananeer_app/ui/views/sign_up/sign_up.dart';
+import 'package:dananeer_app/custom_widgets/progress_widget.dart';
+import 'package:dananeer_app/ui/view/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPageView extends SignUpPageState {
@@ -8,6 +9,7 @@ class SignUpPageView extends SignUpPageState {
     return Scaffold(
       key: scaffoldKey,
       body: Stack(
+        
         fit: StackFit.loose,
         alignment: Alignment.topCenter,
         children: <Widget>[
@@ -22,7 +24,7 @@ class SignUpPageView extends SignUpPageState {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 50.0,
+                  height: 55.0,
                 ),
                 Text(
                   'Sign Up',
@@ -30,7 +32,7 @@ class SignUpPageView extends SignUpPageState {
                   style: _style(fontSize: 35.0),
                 ),
                 SizedBox(
-                  height: 35.0,
+                  height: 30.0,
                 ),
                 Text(
                   'Text TextTextTextTextTextTextTextTextTextText',
@@ -38,10 +40,7 @@ class SignUpPageView extends SignUpPageState {
                   style: _style(fontSize: 20.0),
                 ),
                 SizedBox(
-                  height: 35.0,
-                ),
-                SizedBox(
-                  height: 25.0,
+                  height: 30.0,
                 ),
                 SingleChildScrollView(
                   child: Form(
@@ -49,24 +48,33 @@ class SignUpPageView extends SignUpPageState {
                     child: Column(
                       children: <Widget>[
                         TextInputWidget(
-                          onSave: (value) => signup.setPhone = value,
-                          validate: (value) => checkPhone(value),
-                          icon: Icons.phone,
-                          keyboardType: TextInputType.phone,
-                          hintText: 'Phone',
-                        ),
-                        TextInputWidget(
                           onSave: (value) => signup.setEmail = value,
                           validate: (value) => checkEmail(value),
                           icon: Icons.email,
                           keyboardType: TextInputType.emailAddress,
+                          textinputAction: TextInputAction.next,
+                          currentFocusNode: emailFocusNode,
+                          nextFocusNode: phoneFocusNode,
                           hintText: 'E-mail',
+                        ),
+                        TextInputWidget(
+                          onSave: (value) => signup.setPhone = value,
+                          validate: (value) => checkPhone(value),
+                          icon: Icons.phone,
+                          keyboardType: TextInputType.phone,
+                          textinputAction: TextInputAction.next,
+                          currentFocusNode: phoneFocusNode,
+                          nextFocusNode: passwordFocusNode,
+                          hintText: 'Phone',
                         ),
                         TextInputWidget(
                           onSave: (value) => signup.setPassword = value,
                           validate: (value) => checkPassword(value),
                           icon: Icons.lock,
                           keyboardType: TextInputType.text,
+                          textinputAction: TextInputAction.next,
+                          currentFocusNode: passwordFocusNode,
+                          nextFocusNode: conformPasswordFocusNode,
                           hintText: 'Password',
                           controller: passwordController,
                           isPassword: true,
@@ -75,6 +83,8 @@ class SignUpPageView extends SignUpPageState {
                             isPassword: true,
                             icon: Icons.lock,
                             keyboardType: TextInputType.text,
+                            textinputAction: TextInputAction.done,
+                            currentFocusNode: conformPasswordFocusNode,
                             hintText: 'Conform Password',
                             validate: (value) => checkConformPass(value))
                       ],
@@ -88,7 +98,7 @@ class SignUpPageView extends SignUpPageState {
                   padding: EdgeInsets.symmetric(horizontal: 90.0),
                   color: Colors.lightGreenAccent,
                   child: Text('Sign Up'),
-                  textColor: Colors.black,
+                  textColor: Colors.white,
                   onPressed: submit,
                 ),
                 SizedBox(
@@ -102,7 +112,7 @@ class SignUpPageView extends SignUpPageState {
                       style: _style(fontSize: 17.0),
                     ),
                     InkWell(
-                      onTap: () => navigate(),
+                      onTap:  navigate,
                       child: Text(
                         'Login',
                         style:
@@ -111,18 +121,13 @@ class SignUpPageView extends SignUpPageState {
                     )
                   ],
                 ),
-                 SizedBox(
-                  height: 10.0,
-                ),
-                isActive
-                    ? new Theme(
-                        data: Theme.of(context)
-                            .copyWith(accentColor: Colors.white),
-                        child: new CircularProgressIndicator(
-                          strokeWidth: 3.0,
-                        ),
-                      )
-                    : Container(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: 
+                  isActive
+                      ? CustomProgressBar()
+                      : Container(),),
+                
               ],
             ),
           )

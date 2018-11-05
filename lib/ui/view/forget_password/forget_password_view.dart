@@ -1,8 +1,8 @@
 import 'package:dananeer_app/custom_widgets/input_widget.dart';
-import 'package:dananeer_app/ui/views/reset_password/reset_password.dart';
+import 'package:dananeer_app/ui/view/forget_password/forget_password.dart';
 import 'package:flutter/material.dart';
 
-class ResetPasswordView extends ResetPasswordPageState {
+class ForgetPasswordView extends ForgetPasswordPageState {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +24,7 @@ class ResetPasswordView extends ResetPasswordPageState {
                   height: 130.0,
                 ),
                 Text(
-                  'Reset your password?',
+                  'Forget your Password?',
                   textAlign: TextAlign.center,
                   style: _style(fontSize: 35.0),
                 ),
@@ -32,7 +32,7 @@ class ResetPasswordView extends ResetPasswordPageState {
                   height: 45.0,
                 ),
                 Text(
-                  'Reset your password?Reset your password?Reset your password?Reset your password?Reset your password?',
+                  'Forget your Password?Forget your Password?Forget your Password?Forget your Password?',
                   textAlign: TextAlign.center,
                   style: _style(fontSize: 15.0),
                 ),
@@ -40,29 +40,21 @@ class ResetPasswordView extends ResetPasswordPageState {
                   height: 70.0,
                 ),
                 TextInputWidget(
+                    controller: controller,
                     validate: (value) =>
-                        value == null || value.isEmpty ? 'Invalid input' : null,
+                        value == null || value.isEmpty ? 'Invalid' : null,
                     icon: Icons.email,
-                    isPassword: true,
-                    hintText: 'Password',
-                    keyboardType: TextInputType.text),
+                    hintText: 'Email',
+                    keyboardType: TextInputType.emailAddress),
                 SizedBox(
                   height: 40.0,
                 ),
                 RaisedButton(
-                  padding: EdgeInsets.symmetric(horizontal: 80.0),
-                  color: Colors.white,
-                  textColor: Colors.grey,
-                  child: Text('Conform Password'),
-                  onPressed: () {},
-                ),
-                RaisedButton(
-                  padding: EdgeInsets.symmetric(horizontal: 90.0),
-                  color: Colors.lightGreenAccent,
-                  textColor: Colors.white,
-                  child: Text('Send'),
-                  onPressed: () {},
-                ),
+                    padding: EdgeInsets.symmetric(horizontal: 90.0),
+                    color: Colors.lightGreenAccent,
+                    textColor: Colors.white,
+                    child: Text('Send'),
+                    onPressed: checkEmail(controller.text.toString())),
               ],
             ),
           )

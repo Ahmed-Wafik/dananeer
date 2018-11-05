@@ -1,4 +1,4 @@
-import 'package:dananeer_app/ui/views/log_in/log_in_view.dart';
+import 'package:dananeer_app/ui/view/log_in/log_in_view.dart';
 import 'package:dananeer_app/utils/constants.dart';
 import 'package:dananeer_app/utils/validation.dart';
 import 'package:dio/dio.dart';
@@ -11,21 +11,37 @@ class LogInPage extends StatefulWidget {
 }
 
 abstract class LogInPageSate extends State<LogInPage> {
-  Login loginInput = Login();
+  static final String _baseUrl = 'http://api.dananeer.net/Client/';
+  var _dio = Dio(Options(baseUrl: _baseUrl, headers: {}));
+
   final _validate = ValidateInput();
-  bool isActive = false;
 
   @protected
+  Login loginInput = Login();
+  @protected
+  bool isActive = false;
+  @protected
+  FocusNode emailFocus = FocusNode();
+  @protected
+  FocusNode passwordFocus = FocusNode();
+  @protected
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @protected
   final scaffoldKey = new GlobalKey<ScaffoldState>();
+  @protected
   final Future<SharedPreferences> preferences = SharedPreferences.getInstance();
 
   //Navigation
   @protected
-  navigateToSignUp() => Navigator.of(context).pushNamed('sign_up');
+  navigateToSignUp() =>
+      Navigator.of(context).pushNamed(NavigationRoutes.getSignUp);
   @protected
-  navigateToForget() => Navigator.of(context).pushNamed('forget_password');
-
+  navigateToForget() =>
+      Navigator.of(context).pushNamed(NavigationRoutes.getforgetPassword);
+  @protected
+  navigateToHome() =>
+      Navigator.of(context).pushReplacementNamed(NavigationRoutes.getHome);
   //Chech Inputs
   @protected
   String checkUsername(String value) => _validate.validateUsername(value);
@@ -39,51 +55,66 @@ abstract class LogInPageSate extends State<LogInPage> {
       setState(() {
         isActive = true;
       });
-      _login(loginInput);
+      _getData();
+      //_login(loginInput);
     }
   }
 
+  _getData() {
+    Dio().post(
+      'http://api.dananeer.net/Offer/SensitivePromotions/',
+      options: Options(
+        responseType: ResponseType.JSON
+        
+      ),
+      data: {'ClientID':3},
+    ).then((onValue){
+      print(onValue.data);
+    });
+  }
+
+  @protected
   _login(Login obj) {
-    final String _baseUrl = 'http://api.dananeer.net/Client/';
-    var _dio = Dio(Options(
-      baseUrl: _baseUrl,
-      connectTimeout: 5000,
-      receiveTimeout: 3000,
-      responseType: ResponseType.PLAIN,
-    ));
-    _dio.post('Login', data: obj.toJson()).then((onValue) {
-      onValue.data.toString().isEmpty ? print('null') : print(onValue.data);
-  
+    print(obj.toJson());
+    _dio.post(
+      'Login',
+      data: {'UserName': 'a@b.c', 'Password': '0000'},
+    ).then((onValue) {
+      //onValue.data.toString().isEmpty ? print('null') : print(onValue.data);
+      print("id : " + onValue.data.toString());
+      //int clientId = onValue.extra['Client_ID'];
+      // print('id : $clientId');
+      //_loginSuccess();
     }).whenComplete(() {
       setState(() {
         isActive = false;
+        // navigateToHome();
       });
     }).catchError((onError) {
       print(onError);
     });
   }
 
-  _signUpSuccess() {
-    _sharedPreferences(true);
-    _showSnackBar('Login is successfully',
-        color: Colors.greenAccent, icon: Icons.offline_pin);
-  }
+  Future<SharedPreferences> _loginSuccess(int clientId) =>
+      _sharedPreferences(true, clientId: clientId);
 
-  _signUpFailed() {
+  _loginFailed() {
+    print('null');
     _sharedPreferences(false);
     _showSnackBar('Login is Failed!',
         color: Colors.redAccent, icon: Icons.close);
   }
 
-  _sharedPreferences(bool value) {
+  _sharedPreferences(bool value, {int clientId}) {
     preferences.then((onValue) {
-      onValue.setBool(NavigationRoutes.getPreferenceLogin, value);
+      onValue.setBool(NavigationRoutes.getLogin, value);
+      if (value) onValue.setInt('clientId', clientId);
     });
   }
 
   _showSnackBar(String text, {Color color, IconData icon}) =>
       scaffoldKey.currentState?.showSnackBar(SnackBar(
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 1),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[

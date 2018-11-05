@@ -22,4 +22,9 @@ class SignupInput {
         'Phone': _phone,
         'Password': _password,
       };
+  @override
+  String toString() {
+    // TODO: implement toString
+    return 'email $_email : password $_password : phone $_phone';
+  }
 }

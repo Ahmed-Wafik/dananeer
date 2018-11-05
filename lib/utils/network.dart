@@ -1,7 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'package:dio/dio.dart';
 class NetworkUtils {
   static NetworkUtils _instance = NetworkUtils.internal();
   

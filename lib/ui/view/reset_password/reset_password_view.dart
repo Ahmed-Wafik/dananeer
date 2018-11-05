@@ -1,8 +1,8 @@
 import 'package:dananeer_app/custom_widgets/input_widget.dart';
-import 'package:dananeer_app/ui/views/forget_password/forget_password.dart';
+import 'package:dananeer_app/ui/view/reset_password/reset_password.dart';
 import 'package:flutter/material.dart';
 
-class ForgetPasswordView extends ForgetPasswordPageState {
+class ResetPasswordView extends ResetPasswordPageState {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +24,7 @@ class ForgetPasswordView extends ForgetPasswordPageState {
                   height: 130.0,
                 ),
                 Text(
-                  'Forget your Password?',
+                  'Reset your password?',
                   textAlign: TextAlign.center,
                   style: _style(fontSize: 35.0),
                 ),
@@ -32,7 +32,7 @@ class ForgetPasswordView extends ForgetPasswordPageState {
                   height: 45.0,
                 ),
                 Text(
-                  'Forget your Password?Forget your Password?Forget your Password?Forget your Password?',
+                  'Reset your password?Reset your password?Reset your password?Reset your password?Reset your password?',
                   textAlign: TextAlign.center,
                   style: _style(fontSize: 15.0),
                 ),
@@ -40,11 +40,23 @@ class ForgetPasswordView extends ForgetPasswordPageState {
                   height: 70.0,
                 ),
                 TextInputWidget(
+                    controller: verifiyController,
                     validate: (value) =>
-                        value == null || value.isEmpty ? 'Invalid' : null,
+                        value == null || value.isEmpty ? 'Invalid input' : null,
+                    icon: null,
+                    hintText: 'verification code',
+                    keyboardType: TextInputType.text),
+                SizedBox(
+                  height: 40.0,
+                ),
+                TextInputWidget(
+
+                    controller: newPaswordController,
+                    validate: (value) =>
+                        value == null || value.isEmpty ? 'Invalid input' : null,
                     icon: Icons.email,
-                    hintText: 'Email',
-                    keyboardType: TextInputType.emailAddress),
+                    hintText: 'New Password',
+                    keyboardType: TextInputType.text),
                 SizedBox(
                   height: 40.0,
                 ),
@@ -52,8 +64,11 @@ class ForgetPasswordView extends ForgetPasswordPageState {
                   padding: EdgeInsets.symmetric(horizontal: 90.0),
                   color: Colors.lightGreenAccent,
                   textColor: Colors.white,
-                  child: Text('Send'),
-                  onPressed: () {},
+                  disabledColor: Colors.grey[700],
+                  disabledElevation: 1.0,
+                  elevation: 4.0,
+                  child: Text('Change Password'),
+                   onPressed:resetPassword,
                 ),
               ],
             ),

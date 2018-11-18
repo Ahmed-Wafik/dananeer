@@ -19,9 +19,10 @@ class ValidateInput {
   }
 
   String validateUsername(String value) {
-    if (value == '' || value == null) return 'Can\'t be empty';
-    
-    return null;
+    if (value == '' || value == null)
+      return 'Can\'t be empty';
+    else
+      return null;
   }
 
   String validatePhone(String value) {

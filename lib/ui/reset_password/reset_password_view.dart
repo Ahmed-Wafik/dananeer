@@ -1,11 +1,13 @@
 import 'package:dananeer_app/custom_widgets/input_widget.dart';
-import 'package:dananeer_app/ui/view/reset_password/reset_password.dart';
+import 'package:dananeer_app/custom_widgets/progress_widget.dart';
+import 'package:dananeer_app/ui/reset_password/reset_password.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordView extends ResetPasswordPageState {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       body: Stack(
         fit: StackFit.loose,
         alignment: Alignment.topCenter,
@@ -21,7 +23,7 @@ class ResetPasswordView extends ResetPasswordPageState {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 130.0,
+                  height: 100.0,
                 ),
                 Text(
                   'Reset your password?',
@@ -29,7 +31,7 @@ class ResetPasswordView extends ResetPasswordPageState {
                   style: _style(fontSize: 35.0),
                 ),
                 SizedBox(
-                  height: 45.0,
+                  height: 20.0,
                 ),
                 Text(
                   'Reset your password?Reset your password?Reset your password?Reset your password?Reset your password?',
@@ -39,24 +41,35 @@ class ResetPasswordView extends ResetPasswordPageState {
                 SizedBox(
                   height: 70.0,
                 ),
+                 SingleChildScrollView(
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: <Widget>[
                 TextInputWidget(
                     controller: verifiyController,
-                    validate: (value) =>
-                        value == null || value.isEmpty ? 'Invalid input' : null,
-                    icon: null,
+                    currentFocusNode: codeFocusNode,
+                    nextFocusNode: newPasswordNode,
+                    textinputAction: TextInputAction.next,
+                    validate: checkInput,
+                    icon: Icons.vpn_key,
                     hintText: 'verification code',
                     keyboardType: TextInputType.text),
                 SizedBox(
-                  height: 40.0,
+                  height: 5.0,
                 ),
                 TextInputWidget(
-
                     controller: newPaswordController,
-                    validate: (value) =>
-                        value == null || value.isEmpty ? 'Invalid input' : null,
+                    currentFocusNode: newPasswordNode,
+                    textinputAction: TextInputAction.done,
+                    validate: checkInput,
                     icon: Icons.email,
                     hintText: 'New Password',
                     keyboardType: TextInputType.text),
+                 ],
+                  ),
+                ),
+              ),
                 SizedBox(
                   height: 40.0,
                 ),
@@ -68,8 +81,12 @@ class ResetPasswordView extends ResetPasswordPageState {
                   disabledElevation: 1.0,
                   elevation: 4.0,
                   child: Text('Change Password'),
-                   onPressed:resetPassword,
+                  onPressed: !isActive ? resetPassword : null,
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: isActive ? CustomProgressBar() : Container(),
+                )
               ],
             ),
           )

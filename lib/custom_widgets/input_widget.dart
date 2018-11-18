@@ -11,8 +11,8 @@ class TextInputWidget extends StatelessWidget {
   final TextInputType keyboardType;
   final Color color = Colors.white;
   final TextInputAction textinputAction;
-  FocusNode currentFocusNode = FocusNode();
-  FocusNode nextFocusNode = FocusNode();
+  final FocusNode currentFocusNode;
+  final FocusNode nextFocusNode ;
 
   TextInputWidget(
       {Key key,
@@ -37,7 +37,7 @@ class TextInputWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          icon == null
+          icon != null
               ? Container(
                   height: 42.9,
                   width: 55.0,
@@ -54,7 +54,7 @@ class TextInputWidget extends StatelessWidget {
               child: TextFormField(
                 
                   textInputAction: textinputAction,
-                  focusNode: currentFocusNode,
+                  focusNode: currentFocusNode??FocusNode(),
                   onFieldSubmitted: (term) => _fieldFocusChange(
                       context, currentFocusNode, nextFocusNode),
                   keyboardType: keyboardType,

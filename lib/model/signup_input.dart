@@ -24,7 +24,6 @@ class SignupInput {
       };
   @override
   String toString() {
-    // TODO: implement toString
     return 'email $_email : password $_password : phone $_phone';
   }
 }

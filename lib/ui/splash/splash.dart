@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:dananeer_app/ui/view/splash/splash_view.dart';
+import 'package:dananeer_app/ui/splash/splash_view.dart';
 import 'package:dananeer_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +11,6 @@ class SplashScreen extends StatefulWidget {
 abstract class SplashScreenState extends State<SplashScreen> {
   @protected
   final int seconds = 2;
-  bool isLogIn;
 
   @override
   void initState() {
@@ -20,17 +19,19 @@ abstract class SplashScreenState extends State<SplashScreen> {
     //   print('cscdcs');
     //   //return Navigator.of(context).pushReplacementNamed('select_categories');
     // });
-      getSharedPreferences();
+    getSharedPreferences();
   }
 
   getSharedPreferences() {
     Future<SharedPreferences> preferences = SharedPreferences.getInstance();
+    bool isLogIn;
     preferences.then((onValue) {
       isLogIn = onValue.getBool(NavigationRoutes.getLogin) ?? false;
       print('isFirstLogIn : $isLogIn');
-    }).then((_) => isLogIn
-        ? _screenNavigation(NavigationRoutes.getHome)
-        : _screenNavigation(NavigationRoutes.getSignUp));
+      isLogIn
+          ? _screenNavigation(NavigationRoutes.getHome)
+          : _screenNavigation(NavigationRoutes.getSignUp);
+    });
   }
 
   _screenNavigation(String path) {

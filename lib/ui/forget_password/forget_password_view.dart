@@ -1,11 +1,13 @@
 import 'package:dananeer_app/custom_widgets/input_widget.dart';
-import 'package:dananeer_app/ui/view/forget_password/forget_password.dart';
+import 'package:dananeer_app/custom_widgets/progress_widget.dart';
+import 'package:dananeer_app/ui/forget_password/forget_password.dart';
 import 'package:flutter/material.dart';
 
 class ForgetPasswordView extends ForgetPasswordPageState {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: key,
       body: Stack(
         fit: StackFit.loose,
         alignment: Alignment.topCenter,
@@ -41,8 +43,8 @@ class ForgetPasswordView extends ForgetPasswordPageState {
                 ),
                 TextInputWidget(
                     controller: controller,
-                    validate: (value) =>
-                        value == null || value.isEmpty ? 'Invalid' : null,
+                    textinputAction: TextInputAction.done,
+                    validate: checkInput,
                     icon: Icons.email,
                     hintText: 'Email',
                     keyboardType: TextInputType.emailAddress),
@@ -54,7 +56,13 @@ class ForgetPasswordView extends ForgetPasswordPageState {
                     color: Colors.lightGreenAccent,
                     textColor: Colors.white,
                     child: Text('Send'),
-                    onPressed: checkEmail(controller.text.toString())),
+                    onPressed: () => isActive == false
+                        ? checkEmail(controller.text.toString())
+                        : null),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: isActive ? CustomProgressBar() : Container(),
+                ),
               ],
             ),
           )

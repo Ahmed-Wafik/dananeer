@@ -1,6 +1,6 @@
 import 'package:dananeer_app/custom_widgets/input_widget.dart';
 import 'package:dananeer_app/custom_widgets/progress_widget.dart';
-import 'package:dananeer_app/ui/view/sign_up/sign_up.dart';
+import 'package:dananeer_app/ui/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPageView extends SignUpPageState {
@@ -9,7 +9,6 @@ class SignUpPageView extends SignUpPageState {
     return Scaffold(
       key: scaffoldKey,
       body: Stack(
-        
         fit: StackFit.loose,
         alignment: Alignment.topCenter,
         children: <Widget>[
@@ -94,13 +93,14 @@ class SignUpPageView extends SignUpPageState {
                 SizedBox(
                   height: 20.0,
                 ),
-                RaisedButton(
+                 RaisedButton(
                   padding: EdgeInsets.symmetric(horizontal: 90.0),
                   color: Colors.lightGreenAccent,
                   child: Text('Sign Up'),
                   textColor: Colors.white,
-                  onPressed: submit,
-                ),
+                  disabledColor: Colors.grey[700],
+                  onPressed: !isActive ? submit : null,
+                 ),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -112,7 +112,7 @@ class SignUpPageView extends SignUpPageState {
                       style: _style(fontSize: 17.0),
                     ),
                     InkWell(
-                      onTap:  navigate,
+                      onTap: navigate,
                       child: Text(
                         'Login',
                         style:
@@ -123,11 +123,8 @@ class SignUpPageView extends SignUpPageState {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: 
-                  isActive
-                      ? CustomProgressBar()
-                      : Container(),),
-                
+                  child: isActive ? CustomProgressBar() : Container(),
+                ),
               ],
             ),
           )

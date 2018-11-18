@@ -1,11 +1,13 @@
 import 'package:dananeer_app/custom_widgets/categry_widget.dart';
-import 'package:dananeer_app/ui/view/select_categories/select_category.dart';
+import 'package:dananeer_app/model/category.dart';
+import 'package:dananeer_app/ui/select_categories/select_category.dart';
 import 'package:flutter/material.dart';
-class SelectCategoryView extends SelectCategoryState {
 
+class SelectCategoryView extends SelectCategoryState {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Select Category'),
@@ -26,8 +28,8 @@ class SelectCategoryView extends SelectCategoryState {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     'Knowning you better saving you better!',
-                    style: TextStyle(
-                        fontSize: 18.0, fontWeight: FontWeight.w600),
+                    style:
+                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
                   ),
                 ),
                 Padding(
@@ -48,21 +50,23 @@ class SelectCategoryView extends SelectCategoryState {
                 crossAxisSpacing: 35.0,
                 childAspectRatio: 1.8,
                 padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 15.0),
-                children: list.map((item) {
+                children: Category.getAllCategories.map((item) {
                   return CategoryItem(item);
                 }).toList(),
               )),
           Expanded(
               flex: 1,
               child: Center(
-                child: RaisedButton(
-                  onPressed: sendSelectedCat,
-                  color: Colors.deepPurple,
-                  padding: EdgeInsets.symmetric(horizontal: 55.0),
-                  child: Text('Done', style: TextStyle(color: Colors.white)),
-                  shape: StadiumBorder(),
-                ),
-              ))
+                  child: !isLoading
+                      ? RaisedButton(
+                          onPressed: sendSelectedCat,
+                          color: Colors.deepPurple,
+                          padding: EdgeInsets.symmetric(horizontal: 55.0),
+                          child: Text('Done',
+                              style: TextStyle(color: Colors.white)),
+                          shape: StadiumBorder(),
+                        )
+                      : null))
         ],
       ),
     );
